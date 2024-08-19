@@ -1,0 +1,100 @@
+---
+title: "Testes de Hipóteses"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tigerstats)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Teste Z
+
+### Exercício 9
+
+<p align = "justify">O fabricante de certa marca de suco informa que as embalagens de seu produto têm em média 500 ml, com desvio padrão igual a 10 ml. Tendo sido encontradas no mercado algumas embalagens com menos de 500 ml, suspeita-se que a informação do fabricante seja falsa. Para verificar se isto ocorre, um fiscal analisa uma amostra de 200 embalagens escolhidas aleatoriamente no mercado e constata que as mesmas contêm em média 498 ml. Considerando-se um nível de significância de 5%, pode-se afirmar que o fabricante está
+mentindo? Calcule o valor da prova para esta amostra.</p>
+
+
+```{r two-plus-two, exercise=TRUE}
+sigma <- 10
+n <- 200
+xbarra <- 498
+alpha <- 0.05
+mu <- 500
+#H0:mu=500
+#H1:mu<500 (unilateral a esquerda)
+
+#Estatistica do Teste (teste-z)
+
+Zcal <- (xbarra-mu)/(sigma/sqrt(n))
+Zcal
+Ztab <- qnorm(0.05, mean = 0, sd = 1, lower.tail = T)
+Ztab
+
+Conclusao <- ifelse(abs(Zcal)>abs(Ztab), 
+                    paste("Como |Zcal|>|Ztab|, rejeita-se H0 ao nivel de alpha=", alpha, "de significancia"),
+                    paste("Como |Zcal|<|Ztab|, não rejeita-se H0 ao nivel de alpha=", alpha, "de significancia"))
+
+Conclusao
+
+pnormGC(Zcal, region = "below", mean = 0, sd = 1, graph = T)
+
+pvalor <- pnorm(Zcal, mean = 0, sd = 1, lower.tail = T)
+pvalor
+```
+
+### Exercise with Code
+
+*Here's an exercise with some prepopulated code as well as `exercise.lines = 5` to provide a bit more initial room to work.*
+
+Now write a function that adds any two numbers and then call it:
+
+```{r add-function, exercise=TRUE, exercise.lines = 5}
+add <- function() {
+  
+}
+```
+
+## Topic 2
+
+### Exercise with Hint
+
+*Here's an exercise where the chunk is pre-evaluated via the `exercise.eval` option (so the user can see the default output we'd like them to customize). We also add a "hint" to the correct solution via the chunk immediate below labeled `print-limit-hint`.*
+
+Modify the following code to limit the number of rows printed to 5:
+
+```{r print-limit, exercise=TRUE, exercise.eval=TRUE}
+mtcars
+```
+
+```{r print-limit-hint}
+head(mtcars)
+```
+
+### Quiz
+
+*You can include any number of single or multiple choice questions as a quiz. Use the `question` function to define a question and the `quiz` function for grouping multiple questions together.*
+
+Some questions to verify that you understand the purposes of various base and recommended R packages:
+
+```{r quiz}
+quiz(
+  question("Which package contains functions for installing other R packages?",
+    answer("base"),
+    answer("tools"),
+    answer("utils", correct = TRUE),
+    answer("codetools")
+  ),
+  question("Which of the R packages listed below are used to create plots?",
+    answer("lattice", correct = TRUE),
+    answer("tools"),
+    answer("stats"),
+    answer("grid", correct = TRUE)
+  )
+)
+```
+
